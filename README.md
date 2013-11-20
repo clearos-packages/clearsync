@@ -7,7 +7,7 @@ This is a generic daemon which can be loaded with plugins to perform various
 system syncronization tasks.  For example, watch a file or directory for
 changes and then run an external program/script.
 
-CONFIGURATION
+Configuration
 -------------
 
 The main configuration file, by default, resides in /etc/clearsync.conf.  The
@@ -49,7 +49,7 @@ An example plugin configuration file may look like this (trimmed down from the
 
     </plugin>
 
-STARTING AND STOPPING THE DAEMON
+Starting and Stopping the Daemon
 --------------------------------
 
 The daemon can be started and stopped the usual way using
@@ -58,14 +58,14 @@ directory as clearsyncd.pid.  As of version 1.0, there is no graceful reload
 support (SIGHUP), so configuration changes must be reloaded by restarting the
 service.
 
-LOGGING
+Logging
 -------
 
 When running as a daemon (not in debug mode), normal, warning, and error
 messages are logged using the system logger.  Usually these messages are sent
 to /var/log/messages using the LOG_DAEMON facility.
 
-PLUGIN STATE
+Plugin State
 ------------
 
 Some plugins may save and load state data.  State data is automatically loaded
@@ -78,7 +78,7 @@ example:
       <state-file>/var/lib/state/clearsync/state.dat</state-file>
     </plugin>
 
-PLUGIN EVENT FILTER
+Plugin Event Filter
 -------------------
 
 Some plugins may dispatch events during operation and some other plugins may be
@@ -93,7 +93,7 @@ event-filter may look like this (again, must be within the plugin block):
       <event-filter>FileWatch | RouteWatch</event-filter>
     </plugin>
 
-DEBUGGING
+Debugging
 ---------
 
 To help troubleshoot problems, the daemon can be run in debug mode by passing
