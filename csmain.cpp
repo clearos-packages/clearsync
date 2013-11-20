@@ -339,7 +339,7 @@ csMain::csMain(int argc, char *argv[])
         { "version", 0, 0, 'V' },
         { "config", 1, 0, 'c' },
         { "debug", 0, 0, 'd' },
-        { "dump-state", 0, 0, 'D' },
+        { "dump-state", 1, 0, 'D' },
         { "log", 1, 0, 'l' },
         { "help", 0, 0, 'h' },
 
