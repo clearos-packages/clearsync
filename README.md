@@ -1,5 +1,7 @@
-ClearSync: System Synchronization Daemon
-========================================
+ClearSync
+=========
+System Synchronization Daemon
+-----------------------------
 
 This is a generic daemon which can be loaded with plugins to perform various
 system syncronization tasks.  For example, watch a file or directory for
