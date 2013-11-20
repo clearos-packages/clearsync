@@ -14,7 +14,7 @@ The main configuration file, by default, resides in /etc/clearsync.conf.  The
 default directory containing plugin configuration files is /etc/clearsync.d.
 
 Configuration files are formatted as XML documents.  The main configuration
-file currently has only one configuration tag, <plugin-dir>, used to set or
+file currently has only one configuration tag, plugin-dir, used to set or
 override the default plugin configuration directory.  An example ClearSync
 configuration file looks like this:
 
@@ -25,7 +25,7 @@ configuration file looks like this:
     </csconf>
 
 Plugin configuration files have no specific format other than the required
-opening tag, <plugin>.  This directive has 2 mandatory parameters, "name" and
+opening tag, plugin.  This directive has 2 mandatory parameters, "name" and
 "library".  The "name" parameter is a unique friendly name for the plugin.  It
 must be unique across all loaded plugins.  The "library" parameter is either a
 relative or absolute path to a shared library (including the extension, .so).
@@ -70,8 +70,8 @@ PLUGIN STATE
 
 Some plugins may save and load state data.  State data is automatically loaded
 on plugin initialization and saved on plugin termination.  To enable plugin
-state support you must add a <state-file>...</state-file> directive to the
-plugins configuration file (inside the <plugin>...</plugin> block).  For
+state support you must add a state-file directive to the
+plugins configuration file (inside the plugin block).  For
 example:
 
     <plugin ...>
@@ -83,11 +83,11 @@ PLUGIN EVENT FILTER
 
 Some plugins may dispatch events during operation and some other plugins may be
 interested in receiving them.  In order for a plugin to receive events from other
-plugins, an <event-filter> directive must be specified.  The event filter
+plugins, an event-filter directive must be specified.  The event filter
 directive will contain the friendly name (or names) of other plugins (such as
 FileWatch) as a pipe "|" delimited list.  If for example, the plugin your are
 configuring should receive events from FileWatch and RouteWatch, the
-<event-filter> may look like this (again, must be within the <plugin> block):
+event-filter may look like this (again, must be within the plugin block):
 
     <plugin ...>
       <event-filter>FileWatch | RouteWatch</event-filter>
