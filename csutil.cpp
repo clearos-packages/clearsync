@@ -139,12 +139,12 @@ const char *csRegEx::GetMatch(size_t match)
 
 long csGetPageSize(void)
 {
+    long page_size = 4096;
 #ifdef HAVE_GETPAGESIZE
     // TODO: sysconf
-    return getpagesize();
-#else
-    return 4096;
+    page_size = getpagesize();
 #endif
+    return page_size;
 }
 
 int csExecute(const string &command)
