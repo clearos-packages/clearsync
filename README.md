@@ -101,4 +101,9 @@ the -d, (--debug) command-line switch.  In this mode the program continue to
 run in the foreground and also emits additional debug-level messages.  The PID
 will not be saved when running in this mode.
 
+If you need to examine the contents of a plugin's saved state file, call the
+clearsyncd binary with the -D, (--dump-state) option and pass the filename of
+the binary state file.  Because the data-types are unknown to clearsyncd, the
+value of the key will be printed in hexadecimal.
+
 vi: textwidth=79 syntax=txt
