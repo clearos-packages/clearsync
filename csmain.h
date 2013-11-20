@@ -117,6 +117,18 @@ protected:
     void ParseEventFilter(csPlugin *plugin, const string &text);
     void ValidateConfiguration(void);
     void DispatchPluginEvent(csEventPlugin *event);
+
+    void DumpStateFile(const char *state);
+};
+
+class csPluginStateLoader : public csPlugin
+{
+public:
+    csPluginStateLoader() : csPlugin("StateLoader", NULL, 65536) { };
+
+    virtual void *Entry(void) { return NULL; };
+
+    void DumpStateFile(const char *state);
 };
 
 class csUsageException : public csException
@@ -124,6 +136,13 @@ class csUsageException : public csException
 public:
     explicit csUsageException(void)
         : csException("csUsageException") { };
+};
+
+class csDumpStateException : public csException
+{
+public:
+    explicit csDumpStateException(void)
+        : csException("csDumpStateException") { };
 };
 
 class csInvalidOptionException : public csException

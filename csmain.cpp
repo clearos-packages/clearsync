@@ -339,6 +339,7 @@ csMain::csMain(int argc, char *argv[])
         { "version", 0, 0, 'V' },
         { "config", 1, 0, 'c' },
         { "debug", 0, 0, 'd' },
+        { "dump-state", 0, 0, 'D' },
         { "log", 1, 0, 'l' },
         { "help", 0, 0, 'h' },
 
@@ -348,7 +349,7 @@ csMain::csMain(int argc, char *argv[])
     for (optind = 1;; ) {
         int o = 0;
         if ((rc = getopt_long(argc, argv,
-            "Vc:dl:h?", options, &o)) == -1) break;
+            "Vc:dl:D:h?", options, &o)) == -1) break;
         switch (rc) {
         case 'V':
             Usage(true);
@@ -360,6 +361,9 @@ csMain::csMain(int argc, char *argv[])
             log_stdout->SetMask(
                 csLog::Info | csLog::Warning | csLog::Error | csLog::Debug);
             break;
+        case 'D':
+            DumpStateFile(optarg);
+            throw csInvalidOptionException();
         case 'l':
             log_file = optarg;
             break;
@@ -553,6 +557,25 @@ void csMain::DispatchPluginEvent(csEventPlugin *event)
     }
 }
 
+void csMain::DumpStateFile(const char *state)
+{
+    csPluginStateLoader state_loader;
+    state_loader.DumpStateFile(state);
+}
+
+void csPluginStateLoader::DumpStateFile(const char *state)
+{
+    SetStateFile(state);
+    LoadState();
+
+    for (map<string, struct csPluginStateValue *>::iterator i = this->state.begin();
+        i != this->state.end(); i++) {
+        fprintf(stdout, "\"%s\"\n", i->first.c_str());
+        csHexDump(stdout, i->second->value, i->second->length);
+        fputc('\n', stdout);
+    }
+}
+
 void csMain::Run(void)
 {
     for ( ;; ) {
@@ -611,6 +634,10 @@ void csMain::Usage(bool version)
         csLog::Log(csLog::Info,
             "    Default: %s", _CS_MAIN_CONF);
         csLog::Log(csLog::Info,
+            "  -D, --dump-state <state-file>");
+        csLog::Log(csLog::Info,
+            "    Dump the contents of a plugin state file.");
+        csLog::Log(csLog::Info,
             "  -d, --debug");
         csLog::Log(csLog::Info,
             "    Enable debugging messages and remain in the foreground.");
@@ -630,6 +657,7 @@ int main(int argc, char *argv[])
         cs_main->Run();
 
     } catch (csUsageException &e) {
+    } catch (csDumpStateException &e) {
     } catch (csInvalidOptionException &e) {
         rc = csEXIT_INVALID_OPTION;
     } catch (csXmlParseException &e) {
