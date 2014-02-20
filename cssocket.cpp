@@ -26,6 +26,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <pthread.h>

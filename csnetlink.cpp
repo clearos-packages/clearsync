@@ -29,6 +29,7 @@
 #include <string>
 #include <stdexcept>
 
+#include <unistd.h>
 #include <stdint.h>
 #include <pthread.h>
 #include <string.h>
