@@ -47,7 +47,7 @@ class csXmlParser
 {
 public:
     csXmlParser(void);
-    ~csXmlParser();
+    virtual ~csXmlParser();
     void Reset(void);
     void Parse(void);
     inline void SetConf(csConf *conf) { this->conf = conf; };

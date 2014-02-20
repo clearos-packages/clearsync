@@ -99,7 +99,7 @@ csThreadNetlink *csThreadNetlink::instance = NULL;
 
 csThreadNetlink::csThreadNetlink(csEventClient *parent)
     : csThread(),
-    parent(parent), name("csThreadNetlink"), fd_netlink(-1),
+    name("csThreadNetlink"), parent(parent), fd_netlink(-1),
     nl_buffer(NULL), nl_buffer_size(0), nl_seq(0)
 {
     if (instance != NULL)

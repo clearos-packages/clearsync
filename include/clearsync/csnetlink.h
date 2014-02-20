@@ -80,10 +80,10 @@ private:
     };
 
     int fd_netlink;
-    struct sockaddr_nl sa_local;
-    long nl_buffer_size;
     uint8_t *nl_buffer;
+    size_t nl_buffer_size;
     uint32_t nl_seq;
+    struct sockaddr_nl sa_local;
 };
 
 #endif // _CSNETLINK_H

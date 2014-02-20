@@ -44,9 +44,9 @@ protected:
 
     bool running;
     cstimer_id_t id;
+    csEventClient *target;
     time_t value;
     time_t interval;
-    csEventClient *target;
 
     pthread_mutex_t *timer_mutex;
 };
