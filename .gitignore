@@ -17,6 +17,7 @@
 /.libs/
 /libtool
 /*.lo
+/ltmain.sh
 /m4/
 /Makefile
 /Makefile.in

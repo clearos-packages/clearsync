@@ -20,6 +20,7 @@ fi
 
 echo "Creating plugin: ${SHORT_NAME} (${LONG_NAME})..."
 mkdir -vp "${SHORT_NAME}/m4" || exit 1
+cp -v ../autogen.sh "${SHORT_NAME}/" || exit 1
 
 FILES="configure.ac csplugin-example.conf csplugin-example.cpp csplugin-example.spec.in Makefile.am"
 
@@ -32,16 +33,11 @@ for F in $FILES; do
         -e "s/Example/${LONG_NAME}/g" ${F} > "${SHORT_NAME}/${OUTF}"
 done
 
-pushd "${SHORT_NAME}"
-touch configure.ac
-autoscan
-aclocal -I m4 --install || exit 1
-autoconf -f || exit 1
-autoheader || exit 1
-automake --foreign --include-deps --add-missing --copy || exit 1
-libtoolize -ci || exit 1
-./configure
-cp -v ../libtool .
-popd
+#pushd "${SHORT_NAME}"
+#./autogen.sh || exit 1
+#./configure || exit 1
+#popd
 
 exit 0
+
+# vi: expandtab shiftwidth=4 softtabstop=4 tabstop=4
