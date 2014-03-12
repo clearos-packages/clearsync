@@ -46,8 +46,8 @@ mkdir -vp ${RPM_BUILD_ROOT}/%{_sysconfdir}/clearsync.d
 mkdir -vp ${RPM_BUILD_ROOT}/%{_localstatedir}/run/clearsync
 mkdir -vp ${RPM_BUILD_ROOT}/%{_localstatedir}/state/clearsync
 mkdir -vp ${RPM_BUILD_ROOT}/%{_localstatedir}/lib/clearsync
-cp -v doc/clearsync.conf ${RPM_BUILD_ROOT}/%{_sysconfdir}
-cp -v doc/clearsyncd.init ${RPM_BUILD_ROOT}/%{_sysconfdir}/init.d/clearsyncd
+cp -v etc/clearsync.conf ${RPM_BUILD_ROOT}/%{_sysconfdir}
+cp -v etc/clearsyncd.init ${RPM_BUILD_ROOT}/%{_sysconfdir}/init.d/clearsyncd
 
 # Clean-up
 %clean
@@ -96,3 +96,4 @@ fi
 %{_libdir}/libclearsync.a
 %{_libdir}/libclearsync.la
 
+# vi: expandtab shiftwidth=4 softtabstop=4 tabstop=4
