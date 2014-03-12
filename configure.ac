@@ -15,16 +15,11 @@ AC_PROG_INSTALL
 AM_PROG_LIBTOOL
 
 # Checks for libraries.
-AC_CHECK_LIB([rt], [timer_create], [], [
-	AC_MSG_ERROR([timer_create not found but is required.])])
-AC_CHECK_LIB([dl], [dlopen], [], [
-	AC_MSG_ERROR([dlopen not found but is required.])])
-AC_CHECK_LIB([expat], [XML_ParserCreate], [], [
-	AC_MSG_ERROR([XML_ParserCreate not found but is required.])])
-AC_CHECK_LIB([pthread], [pthread_create], [], [
-	AC_MSG_ERROR([pthread_create not found but is required.])])
-AC_CHECK_LIB([crypto], [CRYPTO_set_locking_callback], [], [
-	AC_MSG_ERROR([CRYPTO_set_locking_callback not found but is required.])])
+AC_CHECK_LIB([rt], [timer_create], [], [AC_MSG_ERROR([librt not found.])])
+AC_CHECK_LIB([dl], [dlopen], [], [AC_MSG_ERROR([libdl not found.])])
+AC_CHECK_LIB([expat], [XML_ParserCreate], [], [AC_MSG_ERROR([libxpat not found.])])
+AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([libpthread not found.])])
+AC_CHECK_LIB([crypto], [CRYPTO_set_locking_callback], [], [AC_MSG_ERROR([libcrypto not found.])])
 
 # Check for optional parameters
 AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable heavy debug output]))
