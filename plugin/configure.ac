@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.65])
+AC_PREREQ([2.63])
 AC_INIT([csplugin-example], [1.0], [http://www.clearfoundation.com/docs/developer/bug_tracker/])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([csplugin-example.cpp])
