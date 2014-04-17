@@ -75,7 +75,7 @@ bool csXmlTag::operator!=(const char *tag)
 static void csXmlElementOpen(
     void *data, const char *element, const char **attr)
 {
-    csXmlParser *csp = (csXmlParser *)data;
+    csXmlParser *csp = static_cast<csXmlParser *>(data);
 
     csXmlTag *tag = new csXmlTag(element, attr);
 #ifdef _CS_DEBUG
@@ -87,7 +87,8 @@ static void csXmlElementOpen(
 
 static void csXmlElementClose(void *data, const char *element)
 {
-    csXmlParser *csp = (csXmlParser *)data;
+    csXmlParser *csp = static_cast<csXmlParser *>(data);
+
     csXmlTag *tag = csp->stack.back();
 #ifdef _CS_DEBUG
     csLog::Log(csLog::Debug, "Element close: %s", tag->GetName().c_str());
@@ -108,7 +109,7 @@ static void csXmlText(void *data, const char *txt, int length)
 {
     if (length == 0) return;
 
-    csXmlParser *csp = (csXmlParser *)data;
+    csXmlParser *csp = static_cast<csXmlParser *>(data);
 
     csXmlTag *tag = csp->stack.back();
     string text = tag->GetText();

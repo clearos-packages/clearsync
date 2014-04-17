@@ -287,13 +287,19 @@ void csMainConf::ScanPlugins(void)
 
     struct dirent *dirent_result;
     for ( ;; ) {
-        if (readdir_r(dh, dirent_entry, &dirent_result) != 0)
+        if (readdir_r(dh, dirent_entry, &dirent_result) != 0) {
+            csLog::Log(csLog::Error, "readdir: %s", strerror(errno));
             break;
-        else if (dirent_result == NULL) break;
+        }
+        else if (dirent_result == NULL) {
+            csLog::Log(csLog::Error, "Error reading plugin-dir entries.");
+            break;
+        }
 
         if (dirent_result->d_type == DT_DIR) continue;
         else if (dirent_result->d_type != DT_REG &&
-            dirent_result->d_type != DT_LNK) continue;
+            dirent_result->d_type != DT_LNK && dirent_result->d_type != DT_UNKNOWN)
+            continue;
         else if (regex.Execute(dirent_result->d_name) == REG_NOMATCH)
             continue;
 
