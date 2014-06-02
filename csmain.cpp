@@ -291,10 +291,7 @@ void csMainConf::ScanPlugins(void)
             csLog::Log(csLog::Error, "readdir: %s", strerror(errno));
             break;
         }
-        else if (dirent_result == NULL) {
-            csLog::Log(csLog::Error, "Error reading plugin-dir entries.");
-            break;
-        }
+        else if (dirent_result == NULL) break;
 
         if (dirent_result->d_type == DT_DIR) continue;
         else if (dirent_result->d_type != DT_REG &&
