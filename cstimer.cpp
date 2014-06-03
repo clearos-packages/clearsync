@@ -238,12 +238,13 @@ void csThreadTimer::Tick(void)
         pthread_mutex_lock((*i)->timer_mutex);
         if ((*i)->running) {
             if (--(*i)->value <= 0) {
+
                 csEventClient *target = (*i)->target;
                 if (target == NULL) target = parent;
                 EventDispatch(new csEventTimer((*i)), target);
 
                 (*i)->value = (*i)->interval;
-                if ((*i)->value > 0) (*i)->running = true;
+                (*i)->running = ((*i)->value > 0) ? true : false;
             }
         }
         pthread_mutex_unlock((*i)->timer_mutex);
