@@ -5,6 +5,8 @@ AM_CXXFLAGS = ${CXXFLAGS} -I./include
 
 EXTRA_DIST = autogen.sh csmain.h etc/clearsync.conf etc/clearsyncd.init
 
+sysconf_DATA = etc/clearsync.conf
+
 lib_LTLIBRARIES = libclearsync.la
 
 libclearsync_la_SOURCES = csconf.cpp csevent.cpp cslog.cpp csnetlink.cpp \
@@ -21,4 +23,7 @@ sbin_PROGRAMS = clearsyncd
 clearsyncd_SOURCES = csmain.cpp
 clearsyncd_LDADD = libclearsync.la
 clearsyncd_CXXFLAGS = ${AM_CXXFLAGS} -D_CS_INTERNAL=1
+
+install-data-local:
+	$(MKDIR_P) $(sysconfdir)/clearsync.d
 

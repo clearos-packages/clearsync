@@ -13,11 +13,12 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_INSTALL
 AM_PROG_LIBTOOL
+AC_PROG_MKDIR_P
 
 # Checks for libraries.
 AC_CHECK_LIB([rt], [timer_create], [], [AC_MSG_ERROR([librt not found.])])
 AC_CHECK_LIB([dl], [dlopen], [], [AC_MSG_ERROR([libdl not found.])])
-AC_CHECK_LIB([expat], [XML_ParserCreate], [], [AC_MSG_ERROR([libxpat not found.])])
+AC_CHECK_LIB([expat], [XML_ParserCreate], [], [AC_MSG_ERROR([libexpat not found.])])
 AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([libpthread not found.])])
 AC_CHECK_LIB([crypto], [CRYPTO_set_locking_callback], [], [AC_MSG_ERROR([libcrypto not found.])])
 
