@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- ClearSync Example Configuration -->
 <csconf version="1">
-  <plugin-dir>/etc/clearsync.d</plugin-dir>
+  <plugin-dir>@confdir@</plugin-dir>
 </csconf>
 <!--
   vi: syntax=xml expandtab shiftwidth=2 softtabstop=2 tabstop=2
