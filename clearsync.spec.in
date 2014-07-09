@@ -66,23 +66,39 @@ install -D -m 644 sysconf/clearsync.tmp %{buildroot}/%{_tmpfilesdir}/clearsync.c
     /usr/sbin/useradd -M -c "ClearSync" -r -d %{_sbindir}/clearsyncd -s /bin/false clearsync 2> /dev/null || :
 
 %preun
+%if "0%{dist}" == "0.v6"
 if [ "$1" = 0 ]; then
     /sbin/chkconfig --del clearsyncd
 fi
+%else
+if [ "$1" = 0 ]; then
+    /sbin/chkconfig --del clearsync
+    /usr/bin/systemctl stop clearsync.service -q
+    /usr/bin/systemctl disable clearsync.service -q
+fi
+%endif
 
 # Post install
 %post
 /sbin/ldconfig
+%if "0%{dist}" == "0.v6"
 /sbin/chkconfig --add clearsyncd >/dev/null 2>&1 || :
 /sbin/service clearsyncd condrestart >/dev/null 2>&1 || :
+%else
+/sbin/chkconfig --add clearsync >/dev/null 2>&1 || :
+/usr/bin/systemctl enable clearsync.service -q
+/usr/bin/systemctl reload-or-restart clearsync.service -q
+%endif
 
 # Post uninstall
 %postun
 /sbin/ldconfig
+%if "0%{dist}" == "0.v6"
 if [ -f /var/lock/subsys/clearsyncd ]; then
     killall -TERM clearsyncd 2>&1 >/dev/null || :
     sleep 2
 fi
+%endif
 
 # Files
 %files
