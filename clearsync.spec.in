@@ -42,6 +42,7 @@ make %{?_smp_mflags}
 # Install
 %install
 make install DESTDIR=%{buildroot}
+mkdir -vp %{buildroot}/%{_sysconfdir}/clearsync.d
 mkdir -vp %{buildroot}/%{_localstatedir}/run/clearsync
 mkdir -vp %{buildroot}/%{_localstatedir}/state/clearsync
 mkdir -vp %{buildroot}/%{_localstatedir}/lib/clearsync
@@ -86,8 +87,6 @@ fi
 # Files
 %files
 %defattr(-,root,root)
-%{_sysconfdir}/clearsync.conf
-%{_sysconfdir}/clearsync.d
 %if "0%{dist}" == "0.v6"
 %attr(755,root,root) %{_sysconfdir}/init.d/clearsyncd
 %else
@@ -96,6 +95,8 @@ fi
 %endif
 %{_sbindir}/clearsyncd
 %{_libdir}/libclearsync.so*
+%{_sysconfdir}/clearsync.d
+%{_sysconfdir}/clearsync.conf
 %attr(755,clearsync,clearsync) %{_localstatedir}/run/clearsync
 %attr(750,clearsync,clearsync) %{_localstatedir}/state/clearsync
 %attr(750,clearsync,clearsync) %{_localstatedir}/lib/clearsync

@@ -3,9 +3,9 @@ AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
 AM_CXXFLAGS = ${CXXFLAGS} -I./include
 
-EXTRA_DIST = autogen.sh csmain.h sysconf/clearsync.tmp
+EXTRA_DIST = autogen.sh csmain.h sysconf/clearsync.tmp m4/adl_recursive_eval.m4 sysconf/clearsyncd.init
 
-sysconf_DATA = sysconf/clearsync.conf sysconf/clearsync.service sysconf/clearsyncd.init
+sysconf_DATA = sysconf/clearsync.conf sysconf/clearsync.service
 
 lib_LTLIBRARIES = libclearsync.la
 
