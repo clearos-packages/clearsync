@@ -29,6 +29,10 @@ AS_IF([test "x$enable_debug" = "xyes"], [
     AC_DEFINE([_CS_DEBUG], [1], [Define to enable heavy debug output.])
 ])
 
+# Expand paths
+adl_RECURSIVE_EVAL("${sbindir}", sbindir)
+adl_RECURSIVE_EVAL("${sysconfdir}", sysconfdir)
+
 # Expand configuration directory
 adl_RECURSIVE_EVAL("${sysconfdir}/clearsync.d", confdir)
 AC_SUBST([confdir])
@@ -57,5 +61,5 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([clock_gettime endpwent getpagesize gettimeofday localtime_r memset pathconf regcomp socket strcasecmp strerror])
 
-AC_CONFIG_FILES([Makefile clearsync.spec etc/clearsync.conf])
+AC_CONFIG_FILES([Makefile clearsync.spec sysconf/clearsync.conf sysconf/clearsync.service])
 AC_OUTPUT

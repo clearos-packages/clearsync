@@ -12,7 +12,8 @@
 /configure
 /depcomp
 /.deps/
-/etc/clearsync.conf
+/sysconf/clearsync.conf
+/sysconf/clearsync.service
 /install-sh
 /*.la
 /.libs/

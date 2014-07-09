@@ -41,17 +41,23 @@ make %{?_smp_mflags}
 
 # Install
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
-mkdir -vp ${RPM_BUILD_ROOT}/%{_sysconfdir}/init.d
-mkdir -vp ${RPM_BUILD_ROOT}/%{_localstatedir}/run/clearsync
-mkdir -vp ${RPM_BUILD_ROOT}/%{_localstatedir}/state/clearsync
-mkdir -vp ${RPM_BUILD_ROOT}/%{_localstatedir}/lib/clearsync
+make install DESTDIR=%{buildroot}
+mkdir -vp %{buildroot}/%{_localstatedir}/run/clearsync
+mkdir -vp %{buildroot}/%{_localstatedir}/state/clearsync
+mkdir -vp %{buildroot}/%{_localstatedir}/lib/clearsync
 
-cp -v etc/clearsyncd.init ${RPM_BUILD_ROOT}/%{_sysconfdir}/init.d/clearsyncd
+install -D -m 644 sysconf/clearsync.conf %{buildroot}/%{_sysconfdir}/clearsync.conf
+
+%if "0%{dist}" == "0.v6"
+install -D -m 644 sysconf/clearsyncd.init %{buildroot}/%{_sysconfdir}/init.d/clearsyncd
+%else
+install -D -m 644 sysconf/clearsync.service %{buildroot}/lib/systemd/system/clearsync.service
+install -D -m 644 sysconf/clearsync.tmp %{buildroot}/%{_tmpfilesdir}/clearsync.conf
+%endif
 
 # Clean-up
 %clean
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+[ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
 
 # Pre install
 %pre
@@ -80,11 +86,16 @@ fi
 # Files
 %files
 %defattr(-,root,root)
-%{_sbindir}/clearsyncd
-%{_libdir}/libclearsync.so*
-%attr(755,root,root) %{_sysconfdir}/init.d/clearsyncd
 %{_sysconfdir}/clearsync.conf
 %{_sysconfdir}/clearsync.d
+%if "0%{dist}" == "0.v6"
+%attr(755,root,root) %{_sysconfdir}/init.d/clearsyncd
+%else
+%attr(755,root,root) /lib/systemd/system
+%attr(755,root,root) %{_tmpfilesdir}
+%endif
+%{_sbindir}/clearsyncd
+%{_libdir}/libclearsync.so*
 %attr(755,clearsync,clearsync) %{_localstatedir}/run/clearsync
 %attr(750,clearsync,clearsync) %{_localstatedir}/state/clearsync
 %attr(750,clearsync,clearsync) %{_localstatedir}/lib/clearsync

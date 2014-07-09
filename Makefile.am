@@ -3,9 +3,9 @@ AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
 AM_CXXFLAGS = ${CXXFLAGS} -I./include
 
-EXTRA_DIST = autogen.sh csmain.h etc/clearsync.conf etc/clearsyncd.init
+EXTRA_DIST = autogen.sh csmain.h sysconf/clearsync.tmp
 
-sysconf_DATA = etc/clearsync.conf
+sysconf_DATA = sysconf/clearsync.conf sysconf/clearsync.service sysconf/clearsyncd.init
 
 lib_LTLIBRARIES = libclearsync.la
 
@@ -23,7 +23,4 @@ sbin_PROGRAMS = clearsyncd
 clearsyncd_SOURCES = csmain.cpp
 clearsyncd_LDADD = libclearsync.la
 clearsyncd_CXXFLAGS = ${AM_CXXFLAGS} -D_CS_INTERNAL=1
-
-install-data-local:
-	$(MKDIR_P) $(sysconfdir)/clearsync.d
 
