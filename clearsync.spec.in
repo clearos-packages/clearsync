@@ -12,6 +12,7 @@ Summary: ClearSync system sychronization daemon
 BuildRequires: autoconf >= 2.63
 BuildRequires: automake
 BuildRequires: libtool
+BuildRequires: systemd
 BuildRequires: expat-devel openssl-devel
 Requires: initscripts /sbin/service
 Requires(pre): /sbin/ldconfig, /usr/sbin/useradd, /usr/bin/getent
