@@ -6,7 +6,7 @@ After=syslog.target network.target
 Type=forking
 PIDFile=/var/run/clearsync/clearsyncd.pid
 User=clearsync
-ExecStart=@sbindir@/clearsyncd -c @sysconfdir@/clearsync.conf
+ExecStart=@sbindir@/clearsyncd -c @sysconfdir@/clearsync.pid
 Restart=on-abort
 
 [Install]
