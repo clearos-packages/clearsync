@@ -587,7 +587,7 @@ void csMain::Run(void)
         switch (event->GetId()) {
         case csEVENT_QUIT:
             csLog::Log(csLog::Debug, "Terminating...");
-            delete event;
+            EventDestroy(event);
             return;
 
         case csEVENT_RELOAD:
@@ -603,7 +603,7 @@ void csMain::Run(void)
             break;
         }
 
-        delete event;
+        EventDestroy(event);
     }
 }
 

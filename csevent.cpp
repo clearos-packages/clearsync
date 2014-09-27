@@ -141,7 +141,7 @@ csEventClient::~csEventClient()
 void csEventClient::EventPush(csEvent *event, csEventClient *src)
 {
     if (event_enable == false) {
-        delete event;
+        EventDestroy(event);
         return;
     }
 
@@ -183,7 +183,7 @@ void csEventClient::EventDispatch(csEvent *event, csEventClient *dst)
             if ((*i)->IsEventsEnabled() == false) continue;
             (*i)->EventPush(event->Clone(), this);
         }
-        delete event;
+        EventDestroy(event);
     }
     else {
         bool found = false;
@@ -197,7 +197,7 @@ void csEventClient::EventDispatch(csEvent *event, csEventClient *dst)
         else {
             csLog::Log(csLog::Debug,
                 "Destination event client not found: %p", dst);
-            delete event;
+            EventDestroy(event);
         }
     }
 
