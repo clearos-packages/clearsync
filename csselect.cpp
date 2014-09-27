@@ -23,10 +23,12 @@
 #include <string>
 #include <stdexcept>
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <pthread.h>
 #include <string.h>
+#include <signal.h>
 #include <errno.h>
 #include <regex.h>
 #include <pwd.h>
@@ -169,10 +171,15 @@ bool csSelect::IsSet(int fd, int whence)
 
 void *csSelect::Entry(void)
 {
-    int max_fd;
+    int rc, max_fd;
     struct timeval tv;
     map<int, int>::iterator i, j;
     fd_set fds_read, fds_write, fds_except;
+
+    sigset_t signal_set;
+    sigfillset(&signal_set);
+    sigdelset(&signal_set, SIGPROF);
+    pthread_sigmask(SIG_BLOCK, &signal_set, NULL);
 
     while (!__sync_fetch_and_add(&select_thread_exit, 0)) {
         FD_ZERO(&fds_read);
@@ -195,46 +202,55 @@ void *csSelect::Entry(void)
 
         pthread_mutex_unlock(&select_mutex);
 
-        if (max_fd == -1) break;
+        if (max_fd == -1) {
+            usleep(_CS_SELECT_USLEEP * 2);
+            continue;
+        }
 
         tv.tv_sec = 0;
         tv.tv_usec = _CS_SELECT_USLEEP;
 
-        int rc = select(max_fd + 1, &fds_read, &fds_write, &fds_except, &tv);
+        rc = select(max_fd + 1, &fds_read, &fds_write, &fds_except, &tv);
 
         if (rc == -1) {
-            csLog::Log(csLog::Error, "select: %s", strerror(rc));
-            break;
+            csLog::Log(csLog::Warning, "select: %s", strerror(rc));
+            usleep(_CS_SELECT_USLEEP * 2);
+            continue;
         }
 
+        // Select time-out...
         if (rc == 0) continue;
+
+        pthread_mutex_lock(&select_mutex);
 
         for (i = select_fds.begin(); i != select_fds.end(); i++) {
 
             if (i->second & FDS_READ && FD_ISSET(i->first, &fds_read)) {
                 j = select_events.find(i->first);
                 if (j == select_events.end())
-                    j->second = FDS_READ;
+                    select_events[i->first] = FDS_READ;
                 else
-                    j->second |= FDS_READ;
+                    select_events[i->first] |= FDS_READ;
             }
             
             if (i->second & FDS_WRITE && FD_ISSET(i->first, &fds_write)) {
                 j = select_events.find(i->first);
                 if (j == select_events.end())
-                    j->second = FDS_WRITE;
+                    select_events[i->first] = FDS_WRITE;
                 else
-                    j->second |= FDS_WRITE;
+                    select_events[i->first] |= FDS_WRITE;
             }
            
             if (i->second & FDS_EXCEPT && FD_ISSET(i->first, &fds_except)) {
                 j = select_events.find(i->first);
                 if (j == select_events.end())
-                    j->second = FDS_EXCEPT;
+                    select_events[i->first] = FDS_EXCEPT;
                 else
-                    j->second |= FDS_EXCEPT;
+                    select_events[i->first] |= FDS_EXCEPT;
             }
         }
+
+        pthread_mutex_unlock(&select_mutex);
 
         parent->EventPush(&select_event, parent);
     }
