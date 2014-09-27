@@ -10,11 +10,11 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}
 Requires: clearsync
 BuildRequires: clearsync-devel expat-devel
-Summary: ClearSync example plugin
+Summary: Example ClearSync plugin
 Requires(pre): /sbin/ldconfig
 
 %description
-This is an example ClearSync plugin.
+Example ClearSync plugin.
 Report bugs to: @PACKAGE_BUGREPORT@
 
 # Build

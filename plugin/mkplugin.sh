@@ -29,14 +29,9 @@ for F in $FILES; do
     sed \
         -e "s/csplugin-example/${SHORT_NAME}/g" \
         -e "s/csplugin_example/${AM_SHORT_NAME}/g" \
-        -e "s/example/${LONG_NAME}/g" \
+        -e "s/example/${SHORT_NAME}/g" \
         -e "s/Example/${LONG_NAME}/g" ${F} > "${SHORT_NAME}/${OUTF}"
 done
-
-#pushd "${SHORT_NAME}"
-#./autogen.sh || exit 1
-#./configure || exit 1
-#popd
 
 exit 0
 

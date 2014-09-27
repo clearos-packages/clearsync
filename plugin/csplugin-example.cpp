@@ -1,4 +1,4 @@
-// ClearSync: example plugin.
+// ClearSync: Example plugin.
 // Copyright (C) 2011 ClearFoundation <http://www.clearfoundation.com>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -94,11 +94,13 @@ void csPluginExample::SetConfigurationFile(const string &conf_filename)
 void *csPluginExample::Entry(void)
 {
     csLog::Log(csLog::Info, "%s: Running.", name.c_str());
-    csTimer *timer = new csTimer(500, 3, 3, this);
 
     unsigned long loops = 0ul;
     GetStateVar("loops", loops);
     csLog::Log(csLog::Debug, "%s: loops: %lu", name.c_str(), loops);
+
+    csTimer *timer = new csTimer(500, 3, 3, this);
+    timer->Start();
 
     for (bool run = true; run; loops++) {
         csEvent *event = EventPopWait();
@@ -111,7 +113,7 @@ void *csPluginExample::Entry(void)
 
         case csEVENT_TIMER:
             csLog::Log(csLog::Debug, "%s: Tick: %lu", name.c_str(),
-                static_cast<csTimerEvent *>(event)->GetTimer()->GetId());
+                static_cast<csEventTimer *>(event)->GetTimer()->GetId());
             break;
         }
 
