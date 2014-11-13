@@ -166,7 +166,7 @@ void *csThreadNetlink::Entry(void)
             case csEVENT_QUIT:
                 csLog::Log(csLog::Debug,
                     "Netlink thread terminated.");
-                EventDestroy(event);
+                delete event;
                 return NULL;
 
             case csEVENT_NETLINK:
@@ -177,7 +177,7 @@ void *csThreadNetlink::Entry(void)
                 csLog::Log(csLog::Debug,
                     "csThreadNetlink: unhandled event: %u",
                     event->GetId());
-                EventDestroy(event);
+                delete event;
             }
 
             continue;

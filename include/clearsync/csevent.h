@@ -25,7 +25,6 @@ using namespace std;
 #define csEVENT_TIMER           0x0002
 #define csEVENT_PLUGIN          0x0003
 #define csEVENT_NETLINK         0x0004
-#define csEVENT_SELECT          0x0005
 #define csEVENT_USER            0x1000
 
 // Broadcast event client type
@@ -46,8 +45,7 @@ public:
         None = 0x00,
         Exclusive = 0x01,
         HighPriority = 0x02,
-        Sticky = 0x04,
-        Persistent = 0x08
+        Sticky = 0x04
     };
 
     csEvent(csevent_id_t id, csevent_flag_t flags = csEvent::None);
@@ -69,7 +67,6 @@ public:
         return (bool)(flags & csEvent::HighPriority);
     };
     inline bool IsSticky(void) { return (bool)(flags & csEvent::Sticky); };
-    inline bool IsPersistent(void) { return (bool)(flags & csEvent::Persistent); };
 
     inline void SetExclusive(bool enable = true) {
         if (enable) flags |= csEvent::Exclusive;
@@ -82,10 +79,6 @@ public:
     inline void SetSticky(bool enable = true) {
         if (enable) flags |= csEvent::Sticky;
         else flags &= ~csEvent::Sticky;
-    };
-    inline void SetPersistent(bool enable = true) {
-        if (enable) flags |= csEvent::Persistent;
-        else flags &= ~csEvent::Persistent;
     };
 
     void *GetUserData(void) { return user_data; };
@@ -126,11 +119,6 @@ public:
     inline void EventBroadcast(csEvent *event) {
         EventDispatch(event, _CS_EVENT_BROADCAST);
     };
-
-    inline void EventDestroy(csEvent *event) {
-        if (!event->IsPersistent()) delete event;
-    }
-
     bool IsEventsEnabled(void) { return event_enable; };
     inline void EventsEnable(bool enable = true) { event_enable = enable; };
 

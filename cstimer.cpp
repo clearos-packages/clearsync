@@ -180,13 +180,13 @@ void *csThreadTimer::Entry(void)
             switch (event->GetId()) {
             case csEVENT_QUIT:
                 csLog::Log(csLog::Debug, "Timer thread terminated.");
-                EventDestroy(event);
+                delete event;
                 return NULL;
 
             default:
                 csLog::Log(csLog::Debug,
                     "Timer: unhandled event: %u", event->GetId());
-                EventDestroy(event);
+                delete event;
             }
         }
                 

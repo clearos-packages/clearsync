@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([clearsync], [1.8], [http://www.clearfoundation.com/docs/developer/bug_tracker/])
+AC_INIT([clearsync], [1.7], [http://www.clearfoundation.com/docs/developer/bug_tracker/])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([csconf.cpp])
 AC_CONFIG_HEADERS([config.h])
