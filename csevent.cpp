@@ -107,7 +107,7 @@ csEventClient::~csEventClient()
     pthread_mutex_destroy(&event_condition_mutex);
 
     for (vector<csEvent *>::iterator i = event_queue.begin();
-        i != event_queue.end(); i++) delete (*i);
+        i != event_queue.end(); i++) EventDestroy((*i));
     event_queue.clear();
 
     for (vector<csEventClient *>::iterator i = event_client.begin();
@@ -141,7 +141,7 @@ csEventClient::~csEventClient()
 void csEventClient::EventPush(csEvent *event, csEventClient *src)
 {
     if (event_enable == false) {
-        delete event;
+        EventDestroy(event);
         return;
     }
 
@@ -151,7 +151,7 @@ void csEventClient::EventPush(csEvent *event, csEventClient *src)
         vector<csEvent *>::iterator i;
         for (i = event_queue.begin(); i != event_queue.end(); i++) {
             if ((*i)->GetId() != event->GetId()) continue;
-            delete (*i);
+            EventDestroy((*i));
             event_queue.erase(i);
             break;
         }
@@ -183,7 +183,7 @@ void csEventClient::EventDispatch(csEvent *event, csEventClient *dst)
             if ((*i)->IsEventsEnabled() == false) continue;
             (*i)->EventPush(event->Clone(), this);
         }
-        delete event;
+        EventDestroy(event);
     }
     else {
         bool found = false;
@@ -197,7 +197,7 @@ void csEventClient::EventDispatch(csEvent *event, csEventClient *dst)
         else {
             csLog::Log(csLog::Debug,
                 "Destination event client not found: %p", dst);
-            delete event;
+            EventDestroy(event);
         }
     }
 

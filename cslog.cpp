@@ -146,13 +146,16 @@ void csLog::Log(Level level, const char *format, ...)
             else
                 stream = stderr;
         }
-        time_t now = time(NULL);
+        const time_t now = time(NULL);
         struct tm tm_now;
-        localtime_r(&now, &tm_now);
+        if (localtime_r(&now, &tm_now) == NULL) {
+            fprintf(stderr, "Error converting local time: %s",
+                strerror(errno));
+        }
         if ((handler->GetType() == csLog::LogFile ||
             (csLog::Debug & logger_mask)) &&
             strftime(timestamp, _CS_MAX_TIMESTAMP,
-            "[%d/%b/%Y:%T %z]", &tm_now) > 0) {
+                "[%d/%b/%Y:%T %z]", &tm_now) > 0) {
             fputs(timestamp, stream);
             fputc(' ', stream);
         }
