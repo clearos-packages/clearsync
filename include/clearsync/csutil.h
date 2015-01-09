@@ -66,5 +66,7 @@ void csHexToBinary(const string &hex, uint8_t *bin, size_t length);
 void csBinaryToHex(const uint8_t *bin, string &hex, size_t length);
 void csBinaryToHex(const uint8_t *bin, char *hex, size_t length);
 
+void csGetLocale(string &locale);
+
 #endif // _CSUTIL_H
 // vi: expandtab shiftwidth=4 softtabstop=4 tabstop=4

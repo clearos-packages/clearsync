@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
 #include <errno.h>
@@ -41,6 +42,8 @@
 
 #include <clearsync/csexception.h>
 #include <clearsync/csutil.h>
+
+#define _CS_UTIL_DEFAULT_LOCALE     "en_US"
 
 csCriticalSection *csCriticalSection::instance = NULL;
 pthread_mutex_t *csCriticalSection::mutex = NULL;
@@ -365,6 +368,19 @@ void csBinaryToHex(const uint8_t *bin, char *hex, size_t length)
 {
     for (size_t i = 0; i < length; i++, hex += 2)
         sprintf(hex, "%02x", bin[i]);
+}
+
+void csGetLocale(string &locale)
+{
+/*
+ * If there is a non-null environment variable LC_ALL, the value of LC_ALL is used.
+ * Else if there is a non-null environment variable LANG, the value of LANG is used.
+ * If all else fails, en_US is returned.
+ */
+    const char *var = getenv("LC_ALL");
+    if (var == NULL) var = getenv("LANG");
+    if (var == NULL) var = _CS_UTIL_DEFAULT_LOCALE;
+    locale = var;
 }
 
 // vi: expandtab shiftwidth=4 softtabstop=4 tabstop=4
