@@ -61,6 +61,7 @@ gid_t csGetGroupId(const string &group);
 void csGetGroupName(gid_t gid, string &name);
 
 void csSHA1(const string &filename, uint8_t *digest);
+void csSHA1(uint8_t *buffer, size_t length, uint8_t *digest);
 
 void csHexToBinary(const string &hex, uint8_t *bin, size_t length);
 void csBinaryToHex(const uint8_t *bin, string &hex, size_t length);

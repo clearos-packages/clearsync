@@ -340,6 +340,15 @@ void csSHA1(const string &filename, uint8_t *digest)
     SHA1_Final(digest, &ctx);
 }
 
+void csSHA1(uint8_t *buffer, size_t length, uint8_t *digest)
+{
+    SHA_CTX ctx;
+    if (SHA1_Init(&ctx) != 1)
+        throw csException(EINVAL, "SHA1_Init");
+    SHA1_Update(&ctx, buffer, length);
+    SHA1_Final(digest, &ctx);
+}
+
 void csHexToBinary(const string &hex, uint8_t *bin, size_t length)
 {
     if (hex.size() != length * 2)

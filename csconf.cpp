@@ -148,19 +148,15 @@ void csXmlParser::Reset(void)
 
     for (vector<csXmlTag *>::iterator i = stack.begin();
         i != stack.end(); i++) delete (*i);
-
-    if (fh) {
-        fclose(fh);
-        fh = NULL;
-    }
 }
 
 void csXmlParser::Parse(void)
 {
+    Reset();
+
     if (conf == NULL)
         throw csException(EINVAL, "Configuration not set.");
 
-    if (fh != NULL) Reset();
     if (!(fh = fopen(conf->GetFilename(), "r")))
         throw csException(errno, conf->GetFilename());
 
@@ -175,6 +171,9 @@ void csXmlParser::Parse(void)
             ParseError(XML_ErrorString(XML_GetErrorCode(p)));
         if (done) break;
     }
+
+    fclose(fh);
+    fh = NULL;
 }
 
 void csXmlParser::ParseError(const string &what)
