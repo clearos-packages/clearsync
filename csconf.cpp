@@ -150,21 +150,22 @@ void csXmlParser::Reset(void)
         i != stack.end(); i++) delete (*i);
 }
 
-void csXmlParser::Parse(void)
+void csXmlParser::Parse(const char *filename)
 {
     Reset();
 
     if (conf == NULL)
         throw csException(EINVAL, "Configuration not set.");
 
-    if (!(fh = fopen(conf->GetFilename(), "r")))
-        throw csException(errno, conf->GetFilename());
+    if (filename == NULL) filename = conf->GetFilename();
+    if (!(fh = fopen(filename, "r")))
+        throw csException(errno, filename);
 
     for (;;) {
         size_t length;
         length = fread(buffer, 1, page_size, fh);
         if (ferror(fh))
-            throw csException(errno, conf->GetFilename());
+            throw csException(errno, filename);
         int done = feof(fh);
 
         if (!XML_Parse(p, (const char *)buffer, length, done))

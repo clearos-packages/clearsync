@@ -49,7 +49,7 @@ public:
     csXmlParser(void);
     virtual ~csXmlParser();
     void Reset(void);
-    void Parse(void);
+    void Parse(const char *filename = NULL);
     inline void SetConf(csConf *conf) { this->conf = conf; };
 
     void ParseError(const string &what);
