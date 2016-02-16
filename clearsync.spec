@@ -1,7 +1,7 @@
 # ClearSync RPM spec
 Name: clearsync
 Version: 2.0
-Release: 3%{dist}
+Release: 4%{dist}
 Vendor: ClearFoundation
 License: GPL
 Group: System Environment/Daemons
