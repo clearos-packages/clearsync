@@ -1,7 +1,7 @@
 # ClearSync RPM spec
 Name: clearsync
 Version: 2.0
-Release: 4%{dist}
+Release: 5%{dist}
 Vendor: ClearFoundation
 License: GPL
 Group: System Environment/Daemons
@@ -15,14 +15,15 @@ BuildRequires: libtool
 BuildRequires: expat-devel openssl-devel
 %if "0%{dist}" != "0.v6"
 BuildRequires: systemd
+%{?systemd_requires}
 %endif
 %if "0%{dist}" == "0.v6"
 Requires: initscripts /sbin/service
+Requires(post): /sbin/chkconfig
+Requires(preun): /sbin/chkconfig
 %endif
 Requires(pre): /sbin/ldconfig, /usr/sbin/useradd, /usr/bin/getent
 Requires(postun): /usr/sbin/userdel
-Requires(post): /sbin/chkconfig
-Requires(preun): /sbin/chkconfig
 
 %description
 ClearSync system synchronization daemon
@@ -60,7 +61,7 @@ install -D -m 644 sysconf/clearsync.conf %{buildroot}/%{_sysconfdir}/clearsync.c
 %if "0%{dist}" == "0.v6"
 install -D -m 644 sysconf/clearsyncd.init %{buildroot}/%{_sysconfdir}/init.d/clearsyncd
 %else
-install -D -m 644 sysconf/clearsync.service %{buildroot}/lib/systemd/system/clearsync.service
+install -D -m 644 sysconf/clearsync.service %{buildroot}/%{_unitdir}/clearsync.service
 install -D -m 644 sysconf/clearsync.tmp %{buildroot}/%{_tmpfilesdir}/clearsync.conf
 %endif
 
@@ -106,16 +107,18 @@ if [ -f /var/lock/subsys/clearsyncd ]; then
     killall -TERM clearsyncd 2>&1 >/dev/null || :
     sleep 2
 fi
+%else
+%systemd_postun_with_restart %{name}.service
 %endif
 
 # Files
 %files
 %defattr(-,root,root)
 %if "0%{dist}" == "0.v6"
-%attr(755,root,root) %{_sysconfdir}/init.d/clearsyncd
+%attr(755,root,root) %{_sysconfdir}/init.d/%{name}
 %else
-%attr(755,root,root) /lib/systemd/system
-%attr(755,root,root) %{_tmpfilesdir}
+%attr(644,root,root) %{_unitdir}/%{name}.service
+%attr(644,root,root) %{_tmpfilesdir}/%{name}.conf
 %endif
 %{_sbindir}/clearsyncd
 %{_libdir}/libclearsync.so*
