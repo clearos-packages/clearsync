@@ -8,8 +8,19 @@ Group: System/Plugins
 Packager: ClearFoundation
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}
-Requires: clearsync
-BuildRequires: clearsync-devel expat-devel
+Requires: clearsync >= 1.5
+Requires: /usr/bin/sudo
+%if "0%{dist}" == "0.v6"
+Requires: /sbin/service
+%else
+BuildRequires: systemd
+%{?systemd_requires}
+%endif
+BuildRequires: clearsync-devel >= 1.5
+BuildRequires: autoconf >= 2.63
+BuildRequires: automake
+BuildRequires: libtool
+BuildRequires: expat-devel
 Summary: Example ClearSync plugin
 Requires(pre): /sbin/ldconfig
 
@@ -20,6 +31,7 @@ Report bugs to: @PACKAGE_BUGREPORT@
 # Build
 %prep
 %setup -q
+./autogen.sh
 %{configure}
 
 %build
@@ -40,7 +52,11 @@ cp -v csplugin-example.conf ${RPM_BUILD_ROOT}/%{_sysconfdir}/clearsync.d
 # Post install
 %post
 /sbin/ldconfig
+%if "0%{dist}" == "0.v6"
 /sbin/service clearsyncd condrestart >/dev/null 2>&1 || :
+%else
+/usr/bin/systemctl restart clearsync -q
+%endif
 
 # Add command(s) to sudo configuration
 #CHECK=`grep "^clearsync[[:space:]]*" /etc/sudoers`
@@ -62,7 +78,11 @@ cp -v csplugin-example.conf ${RPM_BUILD_ROOT}/%{_sysconfdir}/clearsync.d
 # Post uninstall
 %postun
 /sbin/ldconfig
+%if "0%{dist}" == "0.v6"
 /sbin/service clearsyncd condrestart >/dev/null 2>&1 || :
+%else
+/usr/bin/systemctl restart clearsync -q
+%endif
 
 # Files
 %files

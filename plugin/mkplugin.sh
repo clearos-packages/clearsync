@@ -12,6 +12,7 @@ read -e -i "${BUFFER}" -p "Enter a long name (ex: Example, or \"Foo Bar\"): " LO
 SHORT_NAME=$(echo "${SHORT_NAME}" | sed -e 's/[[:space:]/\*()]*//g')
 LONG_NAME=$(echo "${LONG_NAME}" | sed -e 's/["\*()]*//g')
 AM_SHORT_NAME=$(echo ${SHORT_NAME} | sed -e 's/-/_/g')
+CLASS_NAME=$(echo ${LONG_NAME} | sed -e 's/-/_/g' -e 's/[[:space:]]*//g')
 
 if [ -d "${SHORT_NAME}" ]; then
     echo "$0: ${SHORT_NAME}: exists.  Please remove manually."
@@ -30,6 +31,7 @@ for F in $FILES; do
         -e "s/csplugin-example/${SHORT_NAME}/g" \
         -e "s/csplugin_example/${AM_SHORT_NAME}/g" \
         -e "s/example/${SHORT_NAME}/g" \
+        -e "s/PluginExample/Plugin${CLASS_NAME}/g" \
         -e "s/Example/${LONG_NAME}/g" ${F} > "${SHORT_NAME}/${OUTF}"
 done
 
